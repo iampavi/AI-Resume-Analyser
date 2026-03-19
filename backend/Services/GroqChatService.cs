@@ -61,11 +61,17 @@ namespace AIResumeAnalyser.Services
 
             request.Headers.Add("Authorization", $"Bearer {apiKey}");
             request.Content = new StringContent(body, Encoding.UTF8, "application/json");
-
             var response = await _http.SendAsync(request);
 
+            var raw = await response.Content.ReadAsStringAsync();
+
+            Console.WriteLine("GROQ RESPONSE:");
+            Console.WriteLine(raw);
+
             if (!response.IsSuccessStatusCode)
-                return "AI error";
+            {
+                return $"AI ERROR: {raw}";
+            }
 
             var json = await response.Content.ReadAsStringAsync();
 

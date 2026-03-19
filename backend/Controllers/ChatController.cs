@@ -2,9 +2,11 @@
 using AIResumeAnalyser.Services;
 using AIResumeAnalyser.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AIResumeAnalyser.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/chat")]
     public class ChatController : ControllerBase
