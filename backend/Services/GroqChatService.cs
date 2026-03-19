@@ -20,7 +20,8 @@ namespace AIResumeAnalyser.Services
             ResumeContext context,
             string userMessage)
         {
-            var apiKey = _config["Groq:ApiKey"];
+            var apiKey = _config["Groq:ApiKey"]
+         ?? _config["GROQ__APIKEY"];
 
             // 🔥 SYSTEM PROMPT (cost optimized)
             var systemPrompt = $"""
