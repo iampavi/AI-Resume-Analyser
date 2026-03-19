@@ -48,7 +48,7 @@ namespace AIResumeAnalyser.Controllers
                 .FirstOrDefault(x => x.Email == request.Email);
 
             if (user == null)
-                return Unauthorized("Invalid credentials");
+                return Unauthorized("null credentials");
 
             bool valid = BCrypt.Net.BCrypt.Verify(
                 request.Password,

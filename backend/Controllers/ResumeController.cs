@@ -43,7 +43,7 @@ namespace AIResumeAnalyser.Controllers
                 };
 
                 // ✅ STORE IN SESSION (VERY IMPORTANT)
-                HttpContext.Session.SetObject("resumeContext", context);
+               // HttpContext.Session.SetObject("resumeContext", context);
 
                 return Ok(result);
             }
