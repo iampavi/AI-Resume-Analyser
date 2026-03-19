@@ -29,7 +29,7 @@ if (string.IsNullOrEmpty(connectionString))
 }
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlite("Data Source=resume.db"));
 
 // JWT
 var jwtKey = builder.Configuration["Jwt:Key"];
