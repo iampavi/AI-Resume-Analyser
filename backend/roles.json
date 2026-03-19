@@ -1,0 +1,49 @@
+﻿{
+  "Roles": {
+    "BackendDeveloper": {
+      "MinExperienceYears": 2,
+      "RequiredSkills": [ "C#", "ASP.NET Core", "SQL", "REST API" ],
+      "OptionalSkills": [ "Docker", "Microservices", "Redis", "Azure" ]
+    },
+    "FrontendDeveloper": {
+      "MinExperienceYears": 1,
+      "RequiredSkills": [ "JavaScript", "React", "HTML", "CSS" ],
+      "OptionalSkills": [ "TypeScript", "Redux", "Next.js", "Tailwind" ]
+    },
+    "FullStackDeveloper": {
+      "MinExperienceYears": 2,
+      "RequiredSkills": [ "C#", "ASP.NET Core", "React", "JavaScript", "SQL" ],
+      "OptionalSkills": [ "Docker", "Azure", "Microservices", "Git" ]
+    },
+    "DataAnalyst": {
+      "MinExperienceYears": 1,
+      "RequiredSkills": [ "Python", "SQL", "Excel", "Power BI", "Statistics" ],
+      "OptionalSkills": [ "Pandas", "Tableau", "Data Visualization" ]
+    },
+    "DevOpsEngineer": {
+      "MinExperienceYears": 2,
+      "RequiredSkills": [ "Docker", "Kubernetes", "CI/CD", "Linux", "AWS" ],
+      "OptionalSkills": [ "Terraform", "Jenkins", "Azure DevOps" ]
+    },
+    "MobileDeveloper": {
+      "MinExperienceYears": 1,
+      "RequiredSkills": [ "Android", "Kotlin", "Java", "Mobile Development" ],
+      "OptionalSkills": [ "Flutter", "React Native", "Firebase" ]
+    },
+    "MachineLearningEngineer": {
+      "MinExperienceYears": 2,
+      "RequiredSkills": [ "Python", "Machine Learning", "TensorFlow", "Data Science" ],
+      "OptionalSkills": [ "PyTorch", "Deep Learning", "NLP" ]
+    },
+    "SoftwareTester": {
+      "MinExperienceYears": 1,
+      "RequiredSkills": [ "Manual Testing", "Test Cases", "Bug Tracking" ],
+      "OptionalSkills": [ "Selenium", "Automation Testing", "JUnit" ]
+    },
+    "CloudEngineer": {
+      "MinExperienceYears": 2,
+      "RequiredSkills": [ "AWS", "Azure", "Cloud Computing", "Linux" ],
+      "OptionalSkills": [ "Docker", "Terraform", "Kubernetes" ]
+    }
+  }
+}

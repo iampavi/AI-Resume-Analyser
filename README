@@ -1,0 +1,33 @@
+# AI Resume Analyzer
+
+AI-powered resume analyzer that evaluates resumes based on job roles and provides improvement suggestions.
+
+## Features
+
+- Resume scoring system
+- AI skill detection
+- ATS compatibility analysis
+- Resume improvement suggestions
+- Role-based evaluation
+- JWT authentication
+
+## Tech Stack
+
+Frontend
+- React
+- CSS animations
+
+Backend
+- .NET Web API
+- Repository Pattern
+- JWT Authentication
+- SQL Server
+
+## How It Works
+
+1. Upload resume
+2. AI analyzes skills and structure
+3. Resume score is generated
+4. Suggestions provided to improve resume
+
+## Project Structure
