@@ -18,13 +18,6 @@ builder.Services.AddCors(options =>
                   .AllowAnyMethod();
         });
 });
-
-
-if (string.IsNullOrEmpty(connectionString))
-{
-    throw new Exception("Database connection string is not configured.");
-}
-
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=resume.db"));
 
@@ -35,6 +28,10 @@ if (string.IsNullOrEmpty(jwtKey))
 {
     throw new Exception("JWT Key is missing");
 }
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite("Data Source=resume.db"));
+
 
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>

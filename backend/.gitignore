@@ -1,0 +1,14 @@
+﻿# Build folders
+bin/
+obj/
+
+# Visual Studio
+.vs/
+
+# OS files
+*.user
+*.suo
+*.log
+
+# SQLite DB (optional)
+*.db
