@@ -20,12 +20,12 @@ builder.Services.AddCors(options =>
 });
 
 
-// JWT
 var jwtKey = builder.Configuration["Jwt:Key"];
 
+// ? allow EF migrations to run without JWT
 if (string.IsNullOrEmpty(jwtKey))
 {
-    throw new Exception("JWT Key is missing");
+    jwtKey = "TEMP_DEV_KEY_123456789"; // fallback for migration
 }
 
 builder.Services.AddDbContext<AppDbContext>(options =>
