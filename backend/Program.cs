@@ -19,9 +19,6 @@ builder.Services.AddCors(options =>
         });
 });
 
-// DATABASE
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-                      ?? Environment.GetEnvironmentVariable("DB_CONNECTION");
 
 if (string.IsNullOrEmpty(connectionString))
 {
