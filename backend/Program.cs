@@ -18,8 +18,7 @@ builder.Services.AddCors(options =>
                   .AllowAnyMethod();
         });
 });
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite("Data Source=resume.db"));
+
 
 // JWT
 var jwtKey = builder.Configuration["Jwt:Key"];
@@ -69,5 +68,11 @@ app.MapControllers();
 // Render port
 var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
 app.Urls.Add($"http://*:{port}");
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
 
 app.Run();
