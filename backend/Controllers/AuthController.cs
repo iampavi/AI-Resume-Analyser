@@ -38,7 +38,7 @@ namespace AIResumeAnalyser.Controllers
             _context.Users.Add(user);
             _context.SaveChanges();
 
-            return Ok("User registered");
+            return Ok(new { message = "User registered" });
         }
 
         [HttpPost("login")]

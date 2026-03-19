@@ -17,24 +17,26 @@ namespace AIResumeAnalyser.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SendMessage([FromBody] string message)
+        public async Task<IActionResult> SendMessage([FromBody] ChatRequest request)
         {
-            if (string.IsNullOrWhiteSpace(message))
+            if (string.IsNullOrWhiteSpace(request.Message))
                 return BadRequest("Message is empty");
 
-            // 🧠 Get chat history from session
             var history = HttpContext.Session.GetObject<List<ChatMessage>>("history")
                           ?? new List<ChatMessage>();
 
-            // 🧠 Get resume context
             var context = HttpContext.Session.GetObject<ResumeContext>("resumeContext")
-                          ?? new ResumeContext();
+               ?? new ResumeContext
+               {
+                   Skills = "Not available",
+                   MissingSkills = "Not available",
+                   Experience = "Not available",
+                   Summary = "Not available"
+               };
 
-            // 🤖 Call AI
-            var reply = await _chatService.ChatAsync(history, context, message);
+            var reply = await _chatService.ChatAsync(history, context, request.Message);
 
-            // 💾 Save conversation
-            history.Add(new ChatMessage { Role = "user", Content = message });
+            history.Add(new ChatMessage { Role = "user", Content = request.Message });
             history.Add(new ChatMessage { Role = "assistant", Content = reply });
 
             HttpContext.Session.SetObject("history", history);

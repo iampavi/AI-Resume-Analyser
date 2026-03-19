@@ -2,11 +2,13 @@
 using AIResumeAnalyser.Models;
 using AIResumeAnalyser.Repositories;
 using AIResumeAnalyser.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
 namespace AIResumeAnalyser.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ResumeController : ControllerBase
