@@ -1,11 +1,11 @@
-﻿using AIResumeAnalyser.Data;
+using AIResumeAnalyser.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddCors(options =>
@@ -23,10 +23,22 @@ builder.Services.AddCors(options =>
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
                       ?? Environment.GetEnvironmentVariable("DB_CONNECTION");
 
+if (string.IsNullOrEmpty(connectionString))
+{
+    throw new Exception("Database connection string is not configured.");
+}
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-// JWT AUTH
+// JWT
+var jwtKey = builder.Configuration["Jwt:Key"];
+
+if (string.IsNullOrEmpty(jwtKey))
+{
+    throw new Exception("JWT Key is missing");
+}
+
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
@@ -43,9 +55,7 @@ builder.Services.AddAuthentication("Bearer")
 
                 IssuerSigningKey =
                     new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(
-                            builder.Configuration["Jwt:Key"]!
-                        )
+                        Encoding.UTF8.GetBytes(jwtKey)
                     )
             };
     });
@@ -62,7 +72,7 @@ app.UseSession();
 
 app.MapControllers();
 
-// ✅ ADD THIS FOR RENDER
+// Render port
 var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
 app.Urls.Add($"http://*:{port}");
 
