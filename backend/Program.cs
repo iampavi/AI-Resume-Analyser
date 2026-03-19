@@ -1,4 +1,5 @@
 using AIResumeAnalyser.Data;
+using AIResumeAnalyser.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -31,6 +32,8 @@ if (string.IsNullOrEmpty(jwtKey))
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=resume.db"));
 
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IResumeService, ResumeService>();
 
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
@@ -72,7 +75,7 @@ app.Urls.Add($"http://*:{port}");
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.Migrate();
+    db.Database.EnsureCreated(); // ?? ADD THIS
 }
 
 app.Run();
