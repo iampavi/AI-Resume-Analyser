@@ -1,8 +1,9 @@
 ﻿using AIResumeAnalyser.Extensions;
 using AIResumeAnalyser.Models;
+using AIResumeAnalyser.Repositories;
 using AIResumeAnalyser.Services;
 using Microsoft.AspNetCore.Mvc;
-using AIResumeAnalyser.Repositories;
+
 
 namespace AIResumeAnalyser.Controllers
 {
@@ -11,12 +12,12 @@ namespace AIResumeAnalyser.Controllers
     public class ResumeController : ControllerBase
     {
         private readonly IResumeService _resumeService;
-        private readonly IResumeRepository _resumeRepository;
+        private IResumeRepository _repo;
 
-        public ResumeController(IResumeService resumeService, IResumeRepository resumeRepository)
+        public ResumeController(IResumeService resumeService, IResumeRepository repo)
         {
             _resumeService = resumeService;
-            _resumeRepository = resumeRepository;
+            _repo = repo;
         }
 
         [HttpPost("analyze")]
@@ -65,10 +66,9 @@ namespace AIResumeAnalyser.Controllers
         }
 
         [HttpGet("roles")]
-        public IActionResult GetAvailableRoles(
-            [FromServices]_Repositories.IResumeRepository repo)
+        public IActionResult GetAvailableRoles()
         {
-            var roles = repo.GetRoles();
+            var roles = _repo.GetRoles();
             return Ok(roles.Keys);
         }
 
