@@ -23,7 +23,8 @@ namespace AIResumeAnalyser.Services
             int experienceYears,
             int requiredExperience)
         {
-            var apiKey = _config.GetSection("Groq").GetValue<string>("ApiKey");
+            var apiKey = _config["Groq:ApiKey"]
+          ?? _config["GROQ__APIKEY"];
 
             if (string.IsNullOrWhiteSpace(apiKey))
                 return new List<string> { "AI suggestions unavailable." };

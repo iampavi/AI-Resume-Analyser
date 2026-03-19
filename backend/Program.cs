@@ -38,6 +38,7 @@ builder.Services.AddScoped<IResumeService, ResumeService>();
 
 builder.Services.AddScoped<IResumeRepository, ResumeRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddHttpClient<IAiSuggestionService, GroqAiSuggestionService>();
 
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
