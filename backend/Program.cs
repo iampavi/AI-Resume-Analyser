@@ -7,6 +7,9 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration
+    .AddJsonFile("roles.json", optional: false, reloadOnChange: true);
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
