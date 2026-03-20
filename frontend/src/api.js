@@ -1,6 +1,6 @@
 // api.js
 
-const BASE_URL = process.env.REACT_APP_API_URL
+const BASE_URL = process.env.REACT_APP_API_URL  || "https://ai-resume-analyser-l5qu.onrender.com";
 
 export const registerUser = async (data) => {
 
