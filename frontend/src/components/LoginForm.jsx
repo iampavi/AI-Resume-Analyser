@@ -1,32 +1,25 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { loginUser } from "../api";
+import { AuthContext } from "../context/AuthContext";
 
-function LoginForm() {
+export default function LoginForm() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const { login, setAuthType } = useContext(AuthContext);
+
   const handleLogin = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // 🔥 prevent reload
 
     try {
+      const res = await loginUser({ email, password });
 
-      const res = await loginUser({
-        email,
-        password
-      });
-
-      localStorage.setItem("token", res.token);
-      localStorage.setItem("email", email);
-
-      alert("Login successful");
-
-      window.location.reload();
+      // 🔥 Update global auth state
+      login(res.email, res.token);
 
     } catch (err) {
-
-      alert("Login failed");
-
+      alert(err.message);
     }
   };
 
@@ -56,9 +49,15 @@ function LoginForm() {
         Login
       </button>
 
+      {/* 🔥 Switch to Register */}
+      <p
+        style={{ marginTop: "10px", cursor: "pointer", fontSize: "14px" }}
+        onClick={() => setAuthType("register")}
+      >
+        Don’t have an account? Register
+      </p>
+
     </form>
 
   );
 }
-
-export default LoginForm;

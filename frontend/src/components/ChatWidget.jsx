@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
+import { sendChatMessage } from "../api";
+
 
 export default function ChatWidget() {
     const [open, setOpen] = useState(false);
@@ -17,37 +19,29 @@ export default function ChatWidget() {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
 
-    const sendMessage = async () => {
-        if (!input.trim()) return;
+ const sendMessage = async () => {
+    if (!input.trim()) return;
 
-        const userMsg = { role: "user", content: input };
-        setMessages(prev => [...prev, userMsg]);
-        setInput("");
-        setLoading(true);
+    const userMsg = { role: "user", content: input };
+    setMessages(prev => [...prev, userMsg]);
+    setInput("");
+    setLoading(true);
 
-        try {
-            const res = await fetch("https://localhost:7137/api/chat", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(input)
-            });
+    try {
+        const reply = await sendChatMessage(input);
 
-            const reply = await res.text();
+        const botMsg = { role: "assistant", content: reply };
+        setMessages(prev => [...prev, botMsg]);
 
-            const botMsg = { role: "assistant", content: reply };
+    } catch {
+        setMessages(prev => [
+            ...prev,
+            { role: "assistant", content: "Something went wrong." }
+        ]);
+    }
 
-            setMessages(prev => [...prev, botMsg]);
-        } catch {
-            setMessages(prev => [
-                ...prev,
-                { role: "assistant", content: "Something went wrong." }
-            ]);
-        }
-
-        setLoading(false);
-    };
+    setLoading(false);
+};
 
     useEffect(() => {
         setMessages([

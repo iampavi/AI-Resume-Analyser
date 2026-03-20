@@ -4,6 +4,7 @@ import SkillsSection from "../components/SkillsSection";
 import Navbar from "../components/Navbar";
 import { useState } from "react";
 import MissingSkillsSection from "../components/MissingSkillsSection";
+import ChatWidget from "../components/ChatWidget";
 
 
 function ResultPage() {
@@ -270,6 +271,7 @@ function ResultPage() {
         </div>
 
       </div>
+      <ChatWidget />
     </div>
   );
   function generateSummary(suggestions) {

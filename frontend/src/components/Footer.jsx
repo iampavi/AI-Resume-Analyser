@@ -1,6 +1,25 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+
 function Footer() {
+  const [offset, setOffset] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setOffset(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <footer className="footer">
+    <footer
+      className="footer"
+      style={{
+        backgroundPositionY: offset * 0.3 + "px",
+      }}
+    >
       <div className="footerContainer">
 
         <div className="footerBrand">
@@ -37,10 +56,10 @@ function Footer() {
 
         <div className="footerColumn">
           <h4>Company</h4>
-          <a href="/about">About</a>
+          <Link to="/about">About</Link>
           <a href="/privacy-policy">Privacy Policy</a>
           <a href="/terms-of-use">Terms of Use</a>
-          <a href="/contact">Contact</a>
+          <a href="/about">Contact</a>
         </div>
 
       </div>

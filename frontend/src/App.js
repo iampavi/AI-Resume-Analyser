@@ -7,6 +7,8 @@ import AuthModal from "./components/AuthModal";
 
 import HomePage from "./pages/HomePage";
 import ResultPage from "./pages/ResultPage";
+import About from "./pages/About";
+
 
 import "./App.css";
 
@@ -42,6 +44,10 @@ function App() {
             path="/result"
             element={<ResultPage />}
           />
+            <Route
+    path="/about"
+    element={<About />}
+  />
 
         </Routes>
 

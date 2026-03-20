@@ -1,25 +1,29 @@
-import { useState } from "react";
-import { registerUser } from "../api";
+import { useState, useContext } from "react";
+import { registerUser, loginUser } from "../api";
+import { AuthContext } from "../context/AuthContext";
 
-function RegisterForm() {
+export default function RegisterForm() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const { login } = useContext(AuthContext);
+
   const handleRegister = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // 🔥 IMPORTANT (prevent page reload)
 
     try {
+      // ✅ Register first
+      await registerUser({ email, password });
 
-      await registerUser({
-        email,
-        password
-      });
+      // ✅ Auto login after register
+      const res = await loginUser({ email, password });
 
-      alert("Registration successful");
+      // 🔥 Update global auth state
+      login(res.email, res.token);
 
     } catch (err) {
-      alert("Registration failed");
+      alert(err.message);
     }
   };
 
@@ -28,7 +32,6 @@ function RegisterForm() {
     <form className="authForm" onSubmit={handleRegister}>
 
       <h2>Create Account</h2>
-        
 
       <input
         type="email"
@@ -51,7 +54,6 @@ function RegisterForm() {
       </button>
 
     </form>
+
   );
 }
-
-export default RegisterForm;

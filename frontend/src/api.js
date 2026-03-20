@@ -1,51 +1,93 @@
-const BASE_URL = "https://localhost:7137/api";
+// api.js
 
+const BASE_URL = process.env.REACT_APP_API_URL
+
+export const registerUser = async (data) => {
+
+  const response = await fetch(`${BASE_URL}/api/auth/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  });
+
+  // 🔥 FIX: handle text instead of JSON
+  const text = await response.text();
+
+  if (!response.ok) {
+    throw new Error(text || "Registration failed");
+  }
+
+  return text; // or just return true
+};
+
+// 🔐 LOGIN
+export const loginUser = async (data) => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+
+    const text = await response.text();
+
+    if (!response.ok) {
+      throw new Error(text);
+    }
+
+    const result = JSON.parse(text);
+
+    // 🔥 STORE TOKEN + EMAIL
+    localStorage.setItem("token", result.token);
+    localStorage.setItem("email", result.email);
+
+    return result;
+
+  } catch (err) {
+    console.error("LOGIN ERROR:", err);
+    throw err;
+  }
+};
+
+// 📄 ANALYZE RESUME
 export const analyzeResume = async (file, role) => {
-
   const formData = new FormData();
   formData.append("file", file);
   formData.append("role", role);
 
-  const response = await fetch(`${BASE_URL}/resume/analyze`, {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`${BASE_URL}/api/resume/analyze`, {
     method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
     body: formData
   });
 
   return response.json();
 };
 
+// 🤖 CHAT
+export const sendChatMessage = async (message) => {
+  const token = localStorage.getItem("token");
 
-export const registerUser = async (data) => {
-
-  const response = await fetch(`${BASE_URL}/auth/register`, {
+  const response = await fetch(`${BASE_URL}/api/chat`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
     },
-    body: JSON.stringify(data)
-  });
-
-  return response.json();
-};
-
-
-export const loginUser = async (data) => {
-
-  const response = await fetch("https://localhost:7137/api/auth/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
+    body: JSON.stringify({ message }) // ✅ FIX HERE
   });
 
   if (!response.ok) {
-    throw new Error("Login failed");
+    throw new Error("Chat failed");
   }
 
-  const result = await response.json();
-
-  localStorage.setItem("token", result.token);
-
-  return result;
+  return response.text();
 };

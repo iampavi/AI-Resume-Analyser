@@ -4,14 +4,12 @@ import StaggeredMenu from "./StaggeredMenu";
 
 function Navbar() {
   const { setAuthType } = useContext(AuthContext);
-  const [userEmail, setUserEmail] = useState(null);
+
+  // ✅ NEW: use context user instead of local state
+  const { user, logout } = useContext(AuthContext);
+
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-
-  useEffect(() => {
-    const email = localStorage.getItem("email");
-    setUserEmail(email);
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,25 +21,18 @@ function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("email");
-    setUserEmail(null);
-    window.location.reload();
-  };
-
   const getInitials = (email) =>
     email?.substring(0, 2).toUpperCase() ?? "";
 
   const menuItems = [
-    { label: "Home",           link: "/"       },
+    { label: "Home", link: "/" },
     { label: "Analyse Resume", link: "#upload" },
-    { label: "Results",        link: "#score"  },
-    { label: "Learn",          link: "#learn"  },
+    { label: "Results", link: "#score" },
+    { label: "Learn", link: "#learn" },
   ];
 
   const socialItems = [
-    { label: "GitHub",   link: "https://github.com"   },
+    { label: "GitHub", link: "https://github.com" },
     { label: "LinkedIn", link: "https://linkedin.com" },
   ];
 
@@ -54,7 +45,9 @@ function Navbar() {
           <svg viewBox="0 0 24 24" fill="none">
             <path
               d="M9 12h6M9 8h6M9 16h4M5 4h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z"
-              stroke="white" strokeWidth="1.8" strokeLinecap="round"
+              stroke="white"
+              strokeWidth="1.8"
+              strokeLinecap="round"
             />
           </svg>
         </div>
@@ -64,12 +57,12 @@ function Navbar() {
       {/* RIGHT — Actions + Menu */}
       <div className="navRight">
 
-        {/* Buttons come FIRST (left of menu button) */}
+        {/* Buttons */}
         <div className="navActions">
-          {userEmail ? (
+          {user ? (
             <div className="userProfile">
-              <div className="avatar">{getInitials(userEmail)}</div>
-              <span className="userText">{userEmail}</span>
+              <div className="avatar">{getInitials(user)}</div>
+              <span className="userText">{user}</span>
               <button className="logoutBtn" onClick={logout}>
                 Logout
               </button>
@@ -92,12 +85,13 @@ function Navbar() {
           )}
         </div>
 
-        {/* Menu button LAST (rightmost) */}
-        <StaggeredMenu className="menuTriggerWrap"
+        {/* Menu */}
+        <StaggeredMenu
+          className="menuTriggerWrap"
           items={menuItems}
           socialItems={socialItems}
-           menuButtonColor="#374151"
-    openMenuButtonColor="#374151"
+          menuButtonColor="#374151"
+          openMenuButtonColor="#374151"
         />
 
       </div>

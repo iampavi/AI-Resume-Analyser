@@ -13,6 +13,7 @@ function HeroSection() {
   const [roleIndex, setRoleIndex] = useState(0);
   const [displayed, setDisplayed] = useState("");
   const [deleting, setDeleting] = useState(false);
+  
 
   useEffect(() => {
     const current = roles[roleIndex];
@@ -67,14 +68,21 @@ function HeroSection() {
         </p>
 
         <div className="hero2Actions">
-  <button className="hero2Btn hero2BtnPrimary">
+  <button onClick={() =>{
+    document.getElementById("upload")?.scrollIntoView({ behavior: "smooth" });
+  }} className="hero2Btn hero2BtnPrimary">
     Analyze My Resume
     <span className="hero2BtnArrow">→</span>
   </button>
 
-  <button className="hero2Btn hero2BtnGhost">
-    How it works
-  </button>
+<button
+  className="hero2Btn hero2BtnGhost"
+  onClick={() => {
+    document.getElementById("learn")?.scrollIntoView({ behavior: "smooth" });
+  }}
+>
+  How it works
+</button>
 </div>
 
         <div className="hero2Stats">
