@@ -24,6 +24,7 @@ namespace AIResumeAnalyser.Controllers
             if (string.IsNullOrWhiteSpace(request.Message))
                 return BadRequest("Message is empty");
 
+
             var history = HttpContext.Session.GetObject<List<ChatMessage>>("history")
                           ?? new List<ChatMessage>();
 
@@ -35,6 +36,10 @@ namespace AIResumeAnalyser.Controllers
                    Experience = "Not available",
                    Summary = "Not available"
                };
+            if (string.IsNullOrEmpty(context?.Skills))
+            {
+                return BadRequest("Please upload and analyze your resume first.");
+            }
 
             var reply = await _chatService.ChatAsync(history, context, request.Message);
 
