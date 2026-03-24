@@ -5,9 +5,10 @@ import HeroSection from "../sections/HeroSection";
 import LearnMore from "../sections/LearnMore";
 import Footer from "../components/Footer";
 import ChatWidget from "../components/ChatWidget";
+import TrustedCompanies from "../components/TrustedCompanies";
 
 
-function HomePage({ result, setResult }) {
+function HomePage({ setResult }) {
 
   return (
     <div>
@@ -21,6 +22,7 @@ function HomePage({ result, setResult }) {
       <AIScanSection />
 
       <LearnMore />
+      <TrustedCompanies />
 
       <Footer />
 

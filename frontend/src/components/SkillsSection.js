@@ -4,7 +4,7 @@ function SkillsSection({result}){
 
  return(
 
-  <div className="section container">
+  <div className="section-container">
 
    <h2>Detected Skills({result.detectedRequiredSkills.length})</h2>
 

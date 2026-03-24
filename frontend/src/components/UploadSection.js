@@ -178,7 +178,7 @@ function UploadSection({ setResult }) {
           <form onSubmit={handleSubmit} className="upload2Form">
 
             {/* ROLE SELECT */}
-            <div className="upload2Field">
+          
              
               <div className="upload2Field">
   <label className="upload2Label">Target Role</label>
@@ -216,7 +216,7 @@ function UploadSection({ setResult }) {
 
     menu: (base) => ({
       ...base,
-      background: "rgba(249, 247, 247, 0.95)",
+      background: "rgba(247,250,252,0.8)",
       borderRadius: "12px",
       padding: "6px",
       backdropFilter: "blur(10px)"
@@ -225,15 +225,17 @@ function UploadSection({ setResult }) {
     option: (base, state) => ({
       ...base,
       background: state.isSelected
-        ? "#4CAF50"
-        : state.isFocused
-        ? "rgba(255,255,255,0.08)"
+        ? "#22c55e"
         : "transparent",
        color: state.isSelected ? "white" : "#111", // ✅ FIXED
+        // 🚫 REMOVE blue focus completely
+     active: {
+    backgroundColor: "#22c55e"},
       padding: "10px",
       borderRadius: "8px",
       cursor: "pointer"
     }),
+    
 
     singleValue: (base) => ({
       ...base,
@@ -255,8 +257,8 @@ function UploadSection({ setResult }) {
       display: "none"
     })
   }}
+  
 />
-</div>
             </div>
 
             {/* DROP ZONE */}

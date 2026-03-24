@@ -3,30 +3,43 @@ import { loginUser } from "../api";
 import { AuthContext } from "../context/AuthContext";
 
 export default function LoginForm() {
+  const { login, setAuthType } = useContext(AuthContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { login, setAuthType } = useContext(AuthContext);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
-    e.preventDefault(); // 🔥 prevent reload
+    e.preventDefault();
+
+    setError("");
+    setSuccess("");
+    setLoading(true);
 
     try {
       const res = await loginUser({ email, password });
 
-      // 🔥 Update global auth state
       login(res.email, res.token);
 
+      setSuccess("Login successful 🎉");
+
+      // 🔥 close modal after 1 sec
+      setTimeout(() => {
+        setAuthType(null);
+      }, 1000);
+
     } catch (err) {
-      alert(err.message);
+      setError(err.message || "Login failed");
     }
+
+    setLoading(false);
   };
 
   return (
-
     <form className="authForm" onSubmit={handleLogin}>
-
       <h2>Login</h2>
 
       <input
@@ -45,19 +58,15 @@ export default function LoginForm() {
         required
       />
 
-      <button type="submit" className="primaryBtn">
-        Login
+      {/* 🔥 ERROR MESSAGE */}
+      {error && <p className="errorText">{error}</p>}
+
+      {/* 🔥 SUCCESS MESSAGE */}
+      {success && <p className="successText">{success}</p>}
+
+      <button type="submit" className="primaryBtn" disabled={loading}>
+        {loading ? "Logging in..." : "Login"}
       </button>
-
-      {/* 🔥 Switch to Register */}
-      <p
-        style={{ marginTop: "10px", cursor: "pointer", fontSize: "14px" }}
-        onClick={() => setAuthType("register")}
-      >
-        Don’t have an account? Register
-      </p>
-
     </form>
-
   );
-}
+} 

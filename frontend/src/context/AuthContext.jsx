@@ -20,10 +20,9 @@ export const AuthProvider = ({ children }) => {
   const login = (email, token) => {
     localStorage.setItem("email", email);
     localStorage.setItem("token", token);
-    setUser(email);
+    setUser({ email, token });
 
-    // 🔥 CLOSE MODAL AFTER LOGIN
-    setAuthType(null);
+    
   };
 
   // ✅ LOGOUT

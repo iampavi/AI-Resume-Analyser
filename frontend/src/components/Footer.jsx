@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-function Footer() {
+function Footer({ variant = "light" }) {
   const [offset, setOffset] = useState(0);
 
   useEffect(() => {
@@ -15,7 +15,7 @@ function Footer() {
 
   return (
     <footer
-      className="footer"
+      className={`footer ${variant === "dark" ? "footer-dark" : ""}`}
       style={{
         backgroundPositionY: offset * 0.3 + "px",
       }}

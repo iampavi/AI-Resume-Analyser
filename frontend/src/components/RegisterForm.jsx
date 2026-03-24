@@ -1,36 +1,49 @@
 import { useState, useContext } from "react";
-import { registerUser, loginUser } from "../api";
 import { AuthContext } from "../context/AuthContext";
+import { registerUser,loginUser } from "../api";
 
 export default function RegisterForm() {
-
+  
+  const { setAuthType, login } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { login } = useContext(AuthContext);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleRegister = async (e) => {
-    e.preventDefault(); // 🔥 IMPORTANT (prevent page reload)
+const handleRegister = async (e) => {
+  e.preventDefault();
 
-    try {
-      // ✅ Register first
-      await registerUser({ email, password });
+  setLoading(true);
+  setError("");
+  setSuccess("");
 
-      // ✅ Auto login after register
-      const res = await loginUser({ email, password });
+  try {
+    // ✅ 1. Register
+    await registerUser({ email, password });
 
-      // 🔥 Update global auth state
-      login(res.email, res.token);
+    // ✅ 2. Auto login (THIS WAS MISSING ❗)
+    const res = await loginUser({ email, password });
 
-    } catch (err) {
-      alert(err.message);
-    }
-  };
+    // ✅ 3. Update React state (VERY IMPORTANT)
+    login(res.email, res.token);
 
+    setSuccess("Account created successfully 🎉");
+
+    // ✅ 4. Close modal after delay
+    setTimeout(() => {
+      setAuthType(null);
+    }, 1000);
+
+  } catch (err) {
+    setError(err.message);
+  }
+
+  setLoading(false);
+};
   return (
-
     <form className="authForm" onSubmit={handleRegister}>
-
       <h2>Create Account</h2>
 
       <input
@@ -49,11 +62,15 @@ export default function RegisterForm() {
         required
       />
 
-      <button type="submit" className="primaryBtn">
-        Register
+      {/* 🔥 ERROR */}
+      {error && <p className="errorText">{error}</p>}
+
+      {/* 🔥 SUCCESS */}
+      {success && <p className="successText">{success}</p>}
+
+      <button type="submit" className="primaryBtn" disabled={loading}>
+        {loading ? "Registering..." : "Register"}
       </button>
-
     </form>
-
   );
 }

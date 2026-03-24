@@ -2,15 +2,14 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import StaggeredMenu from "./StaggeredMenu";
 
-function Navbar() {
-  const { setAuthType } = useContext(AuthContext);
-
-  // ✅ NEW: use context user instead of local state
-  const { user, logout } = useContext(AuthContext);
+function Navbar( { variant = "light" }) {
+  const { setAuthType, user, logout } = useContext(AuthContext);
 
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [showMenu, setShowMenu] = useState(false);
 
+  // 🔥 Hide navbar on scroll
   useEffect(() => {
     const handleScroll = () => {
       const cur = window.scrollY;
@@ -20,6 +19,18 @@ function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
+
+  // 🔥 Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (!e.target.closest(".userProfileWrapper")) {
+        setShowMenu(false);
+      }
+    };
+
+    document.addEventListener("click", handleClick);
+    return () => document.removeEventListener("click", handleClick);
+  }, []);
 
   const getInitials = (email) =>
     email?.substring(0, 2).toUpperCase() ?? "";
@@ -37,8 +48,8 @@ function Navbar() {
   ];
 
   return (
-    <nav className={`navbar ${showNavbar ? "showNav" : "hideNav"}`}>
-
+    <nav className={`navbar ${variant === "dark" ? "navbar-dark" : ""} ${showNavbar ? "showNav" : "hideNav"}`}>
+      
       {/* LEFT — Logo */}
       <a href="/" className="logo">
         <div className="logoIcon">
@@ -57,15 +68,30 @@ function Navbar() {
       {/* RIGHT — Actions + Menu */}
       <div className="navRight">
 
-        {/* Buttons */}
         <div className="navActions">
-          {user ? (
-            <div className="userProfile">
-              <div className="avatar">{getInitials(user)}</div>
-              <span className="userText">{user}</span>
-              <button className="logoutBtn" onClick={logout}>
-                Logout
-              </button>
+          {user?.email ? (
+            <div className="userProfileWrapper">
+
+              {/* 🔥 Avatar */}
+              <div
+                className="avatar"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowMenu(!showMenu);
+                }}
+              >
+                {getInitials(user.email)}
+              </div>
+
+              {/* 🔥 Dropdown */}
+              {showMenu && (
+                <div className="userDropdown">
+                  <p className="userEmail">{user.email}</p>
+                  <button className="logoutBtn" onClick={logout}>
+                    Logout
+                  </button>
+                </div>
+              )}
             </div>
           ) : (
             <>
@@ -75,6 +101,7 @@ function Navbar() {
               >
                 Get Started
               </button>
+
               <button
                 className="primaryBtn2"
                 onClick={() => setAuthType("login")}
@@ -93,7 +120,6 @@ function Navbar() {
           menuButtonColor="#374151"
           openMenuButtonColor="#374151"
         />
-
       </div>
     </nav>
   );

@@ -33,19 +33,25 @@ export default function ChatWidget() {
         const botMsg = { role: "assistant", content: reply };
         setMessages(prev => [...prev, botMsg]);
 
-    } catch {
-        setMessages(prev => [
-            ...prev,
-            { role: "assistant", content: "Something went wrong." }
-        ]);
+    }catch (err) {
+    let errorMessage = "Something went wrong.";
+
+    // 🔥 Detect resume missing case
+    if (err.message?.toLowerCase().includes("resume")) {
+        errorMessage = "Please upload and analyze your resume first to start chatting.";
     }
 
+    setMessages(prev => [
+        ...prev,
+        { role: "assistant", content: errorMessage }
+    ]);
+}
     setLoading(false);
 };
 
     useEffect(() => {
         setMessages([
-            { role: "assistant", content: "Hi! I analyzed your resume. Ask me anything." }
+            { role: "assistant", content: "Hi! Upload your resume → Click Analyze → Then chat with AI." }
         ]);
     }, []);
 

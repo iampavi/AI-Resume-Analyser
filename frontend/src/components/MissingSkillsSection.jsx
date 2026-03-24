@@ -2,7 +2,7 @@ function MissingSkillsSection({ result }) {
 
  if (!result || !result.missingSkills?.length)
   return (
-   <div className="section">
+   <div className="missing-section">
     <h2>Missing Skills</h2>
     <p className="noMissing">No missing skills detected 🎉</p>
    </div>
